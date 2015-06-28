@@ -42,6 +42,11 @@ public class ItemListManager : MonoBehaviour {
 		showCurrentItem ();
 		return next;
 	}
+
+	public void showCurrent() {
+		hideAll ();
+		showCurrentItem ();
+	}
 		
 	public void moveLeft() {
 		currentPosition = currentPosition + (new Vector3 (1, 0, 0) * Time.deltaTime);
@@ -90,4 +95,8 @@ public class ItemListManager : MonoBehaviour {
 		}
 	}
 
+	public void reset() {
+		currentIndex = 0;
+		this.currentPosition = new Vector3 (0f, 0f, 0f);
+	}
 }

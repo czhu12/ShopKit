@@ -2,25 +2,22 @@
 using System.Collections;
 
 public class GlobalScript : MonoBehaviour {
-	ItemListManager listManager = new ItemListManager();
-
+	CategoryListManager categoryManager;
+	string[] categoryTags = {"Category_1", "Category_2", "Category_3"};
+	int categoryIndex = 0;
 	void Start() {
-		GameObject[] items = GameObject.FindGameObjectsWithTag ("Item");
-		foreach (GameObject item in items) {
-			GameObjectManipulator itemManipulator = new GameObjectManipulator(item);
-			listManager.add (itemManipulator);
-		}
-
-		listManager.showNext ();
+		categoryManager = new CategoryListManager (categoryTags);
+		categoryManager.SetCategory (categoryTags[categoryIndex]);
+		categoryIndex++;
 	}
 
 	void Update () {
 		if (Input.GetKeyDown ("space")) {
-			listManager.showNext ();
+			categoryManager.showNext ();
 		}
 
 		if (Input.GetKey(KeyCode.LeftArrow)) {
-			listManager.moveLeft();
+			categoryManager.moveLeft();
 		}
 
 		if (Input.GetKey(KeyCode.RightArrow)) {
@@ -36,46 +33,59 @@ public class GlobalScript : MonoBehaviour {
 		}
 
 		if (Input.GetKey (KeyCode.U)) {
-			listManager.showNext ();
+			categoryManager.showNext ();
 		}
 
 		if (Input.GetKeyDown (KeyCode.I)) {
-			listManager.showPrevious ();
+			categoryManager.showPrevious ();
 		}
 
 		if (Input.GetKeyDown (KeyCode.H)) {
-			listManager.hideAll ();
+			categoryManager.hideAll ();
 		}
 
-		if (Input.GetKey (KeyCode.J)) {
-			listManager.showNext ();
+		if (Input.GetKeyDown(KeyCode.R)) {
+			categoryManager.SetCategory(categoryTags[categoryIndex]);
+			categoryIndex++;
+			if (categoryIndex >= categoryTags.Length) {
+				categoryIndex = 0;
+			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.N)) {
+			nextCollection ();
 		}
 	}
+
 	public void nextItem() {
-		listManager.showNext ();
+		categoryManager.showNext ();
+	}
+
+	public void nextCollection() {
+		categoryManager.nextCollection ();
 	}
 
 	public void previousItem() {
-		listManager.showPrevious ();
+		categoryManager.showPrevious ();
 	}
 
 	public void moveUp() {
-		listManager.moveUp ();
+		categoryManager.moveUp ();
 	}
 
 	public void moveDown() {
-		listManager.moveDown ();
+		categoryManager.moveDown ();
 	}
 
 	public void moveLeft() {
-		listManager.moveLeft ();
+		categoryManager.moveLeft ();
 	}
 
 	public void moveRight() {
-		listManager.moveRight ();
+		categoryManager.moveRight ();
 	}
 
 	public void debug() {
-		listManager.hideAll ();
+		categoryManager.hideAll ();
 	}
 }

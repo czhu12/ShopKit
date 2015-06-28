@@ -34,6 +34,7 @@ public class WatchKitUnityManager : MonoBehaviour
 		WatchKitBridge.RegisterListenerFor("move_down");
 		WatchKitBridge.RegisterListenerFor("next_item");
 		WatchKitBridge.RegisterListenerFor("previous_item");
+		WatchKitBridge.RegisterListenerFor("next_collection");
 
 		WatchKitBridge.SendMessage("ready", "state", "state");
 	}
@@ -61,6 +62,9 @@ public class WatchKitUnityManager : MonoBehaviour
 			break;
 		case "previous_item":
 			script.previousItem();
+			break;
+		case "next_collection":
+			script.nextCollection();
 			break;
 		default: 
 			break;
