@@ -8,13 +8,47 @@ public class CategoryListManager : MonoBehaviour {
 	string[] categoryTags = {};
 	string currentCategory;
 
+	int compareByTag(GameObject a, GameObject b) {
+		bool aIsTV = false;
+		bool bIsTV = false;
+
+		foreach (Transform child in a.transform) {
+			if (child.tag == "television") {
+				aIsTV = true;
+			}
+		}
+
+		foreach (Transform child in b.transform) {
+			if (child.tag == "television") {
+				bIsTV = true;
+			}
+		}
+		if (aIsTV && bIsTV) {
+			return 0;
+		} else if (aIsTV && !bIsTV) {
+			return 1;
+		} else if (!aIsTV && bIsTV) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
 	public CategoryListManager(string[] tags) {
 		this.categoryTags = tags;
 		foreach (string category in categoryTags) {
 			GameObject[] categoryItems = GameObject.FindGameObjectsWithTag (category);
+			List<GameObject> l = new List<GameObject>();
+
+			for (int i = 0; i < categoryItems.Length; i++) {
+				l.Add(categoryItems[i]);
+			}
+
+			l.Sort (compareByTag);
+
 			ItemListManager listManager = new ItemListManager();
 			
-			foreach (GameObject item in categoryItems) {
+			foreach (GameObject item in l) {
 				GameObjectManipulator itemManipulator = new GameObjectManipulator(item);
 				listManager.add (itemManipulator);
 			}

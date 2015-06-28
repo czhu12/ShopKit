@@ -20,6 +20,10 @@ public class ItemListManager : MonoBehaviour {
 	}
 
 	public GameObjectManipulator showPrevious() {
+		if (shouldntChangePrevious ()) {
+			return getCurrentObject();
+		}
+
 		currentIndex--;
 		if (currentIndex < 0) {
 			currentIndex = objectList.Count - 1;
@@ -28,19 +32,62 @@ public class ItemListManager : MonoBehaviour {
 
 		GameObjectManipulator previous = objectList [currentIndex];
 		showCurrentItem ();
+		checkAndUpdateTelevision (2);
 		return previous;
 	}
 
+	bool shouldntChangePrevious() {
+		GameObjectManipulator current = getCurrentObject ();
+		string name = current.getName ();
+		if (name == "television") {
+			GameObject obj = current.getGameObject();
+			VideoPlayer vp = obj.GetComponentInChildren<VideoPlayer>();
+			return vp.toPreviousVideo();
+		}
+		return false;
+	}
+
+	bool shouldntChangeAdvance() {
+		GameObjectManipulator current = getCurrentObject ();
+		string name = current.getName ();
+		if (name == "television") {
+			GameObject obj = current.getGameObject();
+			VideoPlayer vp = obj.GetComponentInChildren<VideoPlayer>();
+			return vp.toNextVideo();
+		}
+		return false;
+	}
+
 	public GameObjectManipulator showNext() {
+		// This is TV specific behavior. Basically, it if is currently showing LeBron, 
+		// we will not switch the channel. Rather, we will update the channel to SV
+
+		if (shouldntChangeAdvance()) {
+			return getCurrentObject();
+		}
+
 		currentIndex++;
 		if (currentIndex >= objectList.Count) {
 			currentIndex = 0;
 		}
 
 		hideAll ();
+
 		GameObjectManipulator next = objectList [currentIndex];
 		showCurrentItem ();
+		checkAndUpdateTelevision (0);
+
 		return next;
+	}
+
+	void checkAndUpdateTelevision(int newVal) {
+		GameObjectManipulator current = getCurrentObject ();
+		string name = current.getName ();
+		if (name == "television") {
+			GameObject obj = current.getGameObject();
+			VideoPlayer vp = obj.GetComponentInChildren<VideoPlayer>();
+			vp.setCurrentVideo(newVal);
+		}
 	}
 
 	public void showCurrent() {

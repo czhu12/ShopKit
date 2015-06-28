@@ -16,6 +16,14 @@ public class GameObjectManipulator : MonoBehaviour {
 		//Vector3.Lerp (currentModel.transform.position, currentPosition, Time.deltaTime);
 		currentModel.transform.position = currentPosition;
 	}
+
+	public string getName() {
+		return currentModel.transform.name;
+	}
+
+	public GameObject getGameObject() {
+		return currentModel;
+	}
 	/*
 	public void moveLeft() {
 		currentPosition = currentPosition + (new Vector3 (1, 0, 0) * Time.deltaTime);
